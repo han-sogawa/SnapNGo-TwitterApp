@@ -51,9 +51,9 @@ class Task:
         delay = (tweet_time - now).total_seconds()
         print('Delay: ' + delay)
 
-    def sendTaskTweet(self, api):
+    def sendTaskTweet(self):
         if (not self.tweetSent):
-            #api.PostUpdate(self.toString())
+            api.update_status(self.toString())
             self.tweetSent = True
             self.tweetSentTime = datetime.now()
 
@@ -65,20 +65,6 @@ class Task:
 class SnapNGo:
     def __init__(self):
         self.task_ID = 1000
-        #self.task_dictionary = {}
-        '''
-        keys = json.load(open('keys.json'))
-        self.consumer_key = keys['consumer_key']
-        self.consumer_key_secret = keys['consumer_key_secret']
-
-        self.access_token = keys['access_token']
-        self.access_token_secret = keys['access_token_secret']
-
-        self.api = twitter.Api(consumer_key=self.consumer_key,
-                               consumer_secret=self.consumer_key_secret,
-                               access_token_key=self.access_token,
-                               access_token_secret=self.access_token_secret)
-        '''
 
     def selectAction(self):
         print("Type '1' to add new tasks")
@@ -128,18 +114,28 @@ class SnapNGo:
             #print('New task created: ' + self.task_dictionary[self.task_ID].toString())
             print('New task created: ' + task_dictionary[self.task_ID].toString())
             self.task_ID += 1
-
             input = raw_input('>')
 
         print 'All tasks: \n'
         self.printTasks()
+
+    def sendUnsentTweets(self):
+        send_tweet = raw_input(
+            'Are you sure you would like to send tweets for tasks not already sent? Type Y for yes and N for no')
+        tweets_sent = 0
+        if (send_tweet == 'Y'):
+            for i in range(1000, self.task_ID):
+                if (not task_dictionary[i].tweetSent):
+                    task_dictionary[i].sendTaskTweet()
+                    tweets_sent += 1
+
+        print("Finished. " + str(tweets_sent) + "tweets were sent.")
 
     def printTasks(self):
         s = ''
         print self.task_ID
         for i in range(1000, self.task_ID):
             s += task_dictionary[i].toString()
-            #s += self.task_dictionary[i].toString()
         print('All Tasks:\n' + s)
 
 
