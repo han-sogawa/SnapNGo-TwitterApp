@@ -1,0 +1,50 @@
+1 KSC
+2 Munger_Courtyard
+3 Paramecium_Pond
+4 Observatory
+5 Sci_Trailers
+6 McAfee_Living_Room
+7 Bates_Statue
+8 Freeman
+9 Dower
+10 Chapel
+11 Swing
+12 9&3/4_Sign
+13 Davis_Museum_Sign
+14 Lulu_Mail_Services
+15 Boathouse
+16 Munger_Meadow
+17 Pom
+18 Sev_Green
+19 Clapp
+#
+15 14 6
+14 1 3
+1 17 4
+14 17 3
+17 2 2
+2 3 3
+2 16 1
+16 3 1
+3 4 3
+4 5 2
+5 12 5
+16 13 1
+13 12 3
+5 6 3
+6 7 1
+7 8 1
+8 9 1
+18 19 1
+15 18 6
+13 18 2
+14 18 5
+19 12 2
+19 10 1
+10 12 2
+11 9 3
+11 10 1
+16 14 1
+3 12 2
+13 19 3
+11 8 4
