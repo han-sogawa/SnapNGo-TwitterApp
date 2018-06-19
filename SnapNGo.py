@@ -66,14 +66,17 @@ class SnapNGo:
     def __init__(self):
         self.task_ID = 1000
 
+    # Allows users to select from 4 different actions using the command
+    # line. Actions include adding new tasks, tweeting unset tasks, printing
+    # all tasks, and writing tasks to a file
     def selectAction(self):
         print("Type '1' to add new tasks")
         print("Type '2' to tweet unsent tasks")
         print("Type '3' to print all tasks")
-
         print("Type '4' to write tasks to a file")
         print("Type 'EXIT' to exit the program")
         action = raw_input('>')
+
         while (action != 'EXIT'):
             if (action == '1'):
                 print('Type 1 to enter tasks via command line, Type 2 to input tasks through a file')
@@ -100,8 +103,9 @@ class SnapNGo:
             print("Type 'EXIT' to exit the program")
             action = raw_input('>')
 
+
     def addTasksViaCommandLine(self):
-        input = raw_input('Please enter a task in the following format: location, month, day, year, hour, minutes\n>')
+        input = raw_input('Please enter a task in the following format: location, month, day, year, hour, minutes, compensation\n>')
         while (input != 'end'):
             # check to see if input has correct length and is otherwise correct format
             input_array = re.sub(r'\s', '', input).split(',')
