@@ -3,7 +3,10 @@ from tweepy import OAuthHandler
 import tweepy
 import json, math, re, csv
 from tweepy.streaming import StreamListener
+import random
+import time as t
 from datetime import *
+import threading
 
 keys = json.load(open('keys.json'))
 consumer_key = keys['consumer_key']
@@ -83,15 +86,15 @@ class SnapNGo:
                 enter_tasks = raw_input('>>')
                 if (enter_tasks == '1'):
                     self.addTasksViaCommandLine()
-                if (enter_tasks == '2'):
+                elif (enter_tasks == '2'):
                     print('Type the name of the file')
-                    #file_name = raw_input('>>>')
-                    #self.addTasksViaFile(file_name)
-            if (action == '2'):
+                    file_name = raw_input('>>>')
+                    self.addTasksViaFile(file_name)
+            elif (action == '2'):
                 self.sendUnsentTweets()
-            if (action == '3'):
+            elif (action == '3'):
                 self.printTasks()
-            if (action == '4'):
+            elif (action == '4'):
                 print('Write the name of the file to write tasks to:')
                 #file_name = raw_input('>>')
                 #self.writeTasksToFile(file_name)
@@ -117,21 +120,42 @@ class SnapNGo:
             task_dictionary[self.task_ID] = Task(self.task_ID, input_array[0], task_datetime, input_array[6])
             #print('New task created: ' + self.task_dictionary[self.task_ID].toString())
             print('New task created: ' + task_dictionary[self.task_ID].toString())
+            print('Add another task, or type end to finish')
             self.task_ID += 1
             input = raw_input('>')
 
         print 'All tasks: \n'
         self.printTasks()
 
+    def addTasksViaFile(self, file_name):
+        with open(file_name, "r") as f:
+            content = f.readlines()
+
+        for line in content:
+            input_array = line.split(',')
+            task_date = date(int(input_array[3]), int(input_array[1]), int(input_array[2]))
+            task_time = time(int(input_array[4]), int(input_array[5]))
+            task_datetime = datetime.combine(task_date, task_time)
+
+            task_dictionary[self.task_ID] = Task(self.task_ID, input_array[0], task_datetime, input_array[6])
+            print('New task created: ' + task_dictionary[self.task_ID].toString())
+            self.task_ID += 1
+
+        print 'All tasks: \n'
+        self.printTasks()
+
     def sendUnsentTweets(self):
         send_tweet = raw_input(
-            'Are you sure you would like to send tweets for tasks not already sent? Type Y for yes and N for no')
+            'Are you sure you would like to send tweets for tasks not already sent? Type Y for yes and N for no ')
         tweets_sent = 0
         if (send_tweet == 'Y'):
             for i in range(1000, self.task_ID):
                 if (not task_dictionary[i].tweetSent):
                     task_dictionary[i].sendTaskTweet()
                     tweets_sent += 1
+                    seconds = random.randint(30,60)
+                    print "Wait time: " + str(seconds)
+                    t.sleep(seconds)
 
         print("Finished. " + str(tweets_sent) + "tweets were sent.")
 
@@ -183,22 +207,38 @@ class BotResponses:
         request_taskID = BotResponses.userRequestingTask(text)
         submit_taskID = BotResponses.userSubmittingTask(text)
         #print 'detected task ' + request_taskID
-        if(request_taskID is not None):
-            # check if task is available
-            print 'User ' + name + ' is trying to request task #' + request_taskID
-            message = "Thank you, you have been assigned task #" + request_taskID
-            api.send_direct_message(screen_name = name, text = message)
-            details = "Task #1000 details: Photo of Snap 'N' Go Student Poster from 5:30-7:00pm on 04/20/2018. Compensation: $1.00"
-            api.send_direct_message(screen_name=name, text=details)
+        if (request_taskID is not None):
+            if (not int(request_taskID) in task_dictionary.keys()):
+                error_message = "Error: Task does not exist. Please request an exisitng task."
+                api.send_direct_message(screen_name = name, text = error_message)
+            else:
+                # check if task is available
+                print 'User ' + name + ' is trying to request task #' + request_taskID
+                asignee = task_dictionary[int(request_taskID)].assignedTo
+                if(asignee == ''):
+                    task_dictionary[int(request_taskID)].assignedTo = name
+                    message = "Thank you, you have been assigned task #" + request_taskID
+                    api.send_direct_message(screen_name = name, text = message)
+                    details = "Task #" + str(request_taskID) + " details: Photo of " + str(task_dictionary[int(request_taskID)].location) + \
+                    " by " + str(task_dictionary[int(request_taskID)].datetime.strftime(
+                        "%B %d, %Y %I:%M%p")) + ". Compensation: " + str(task_dictionary[int(request_taskID)].compensation) + "."
+                    print details
+                    api.send_direct_message(screen_name=name, text=details)
+                elif (asignee == name):
+                    message = "You have already been assigned this task."
+                    api.send_direct_message(screen_name = name, text = message)
+                else:
+                    message = "Sorry, this task is already assigned to someone else."
+                    api.send_direct_message(screen_name = name, text = message)
         elif (submit_taskID is not None):
             print 'User ' + name + ' is submitting photo for task #' + submit_taskID
-            confirmation = "Task #" + submit_taskID + " submission is successful. Compensation: $1.00"
+            confirmation = "Task #" + submit_taskID + " submission is successful. Compensation: " + str(task_dictionary[int(request_taskID)].compensation)
             api.send_direct_message(screen_name=name, text=confirmation)
 
     @staticmethod
     def userRequestingTask(message):
         #print 'searching for regex'
-        p = re.compile('request task #(\d\d\d\d)')
+        p = re.compile('request task (\d\d\d\d)')
         m = p.search(message)
         if m is None:
             #print 'did not find regex'
@@ -224,13 +264,26 @@ def main():
     auth = OAuthHandler(consumer_key, consumer_key_secret)
     auth.secure = True
     auth.set_access_token(access_token, access_token_secret)
-    '''
-    dmlistener = Stream(auth, DMListener())
-    dmlistener.userstream()
-    '''
-    snap = SnapNGo()
-    snap.selectAction()
 
+    dmlistener = Stream(auth, DMListener())
+    # dmlistener.userstream()
+
+    snap = SnapNGo()
+    # snap.selectAction()
+
+    # creating thread
+    t1 = threading.Thread(target=snap.selectAction())
+    t2 = threading.Thread(target=dmlistener.userstream())
+
+    # starting thread 1
+    t1.start()
+    # starting thread 2
+    t2.start()
+
+    # wait until thread 1 is completely executed
+    t1.join()
+    # wait until thread 2 is completely executed
+    t2.join()
 
 if __name__ == '__main__':
     #when a follow request is received, follow them back and send a message.
