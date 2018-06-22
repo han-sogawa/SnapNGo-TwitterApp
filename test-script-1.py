@@ -1,4 +1,5 @@
 import random
+import numpy
 
 class Task:
     def __init__(self, id, start, end, datetime, duration, compensation):
@@ -14,7 +15,7 @@ class Task:
 
 class SnapNGo:
     def readFile(filename):
-        Matrix = [[0 for x in range(19)] for y in range(19)]
+        numpy.zeros((19,19))
         names = {}
 
         # for row in graph:
@@ -33,6 +34,7 @@ class SnapNGo:
                 continue
             if edges is False:
                 name = line.split(' ', 1)[1]
+                name = name.strip('\n')
                 names[v] = name
             else:
                 edge = []
@@ -47,11 +49,10 @@ class SnapNGo:
         #         print '{:4}'.format(val),
         #     print
 
+    # randomly create 5 tasks
     def randomDist():
         frm_num = random.randint(1,19)
         frm = g.get_vertex_id(frm_num)
-        to_num = random.randint(1,19)
-        to = g.get_vertex_id(to_num)
 
         task = Task(1, frm, to, '2018', 10, 5)
         print str(task)
