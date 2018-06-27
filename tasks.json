@@ -1,35 +1,13 @@
 {
-    "1000": {
-        "assignedTo": "", 
-        "compensation": "$1", 
-        "taskSubmitted": false, 
-        "tweetSent": false, 
-        "location": "Sage Lounge Exit Door", 
-        "submissionTime": 0, 
-        "tweetSentTime": 0, 
-        "submissionPhotoLink": "", 
-        "datetime": "06 26 2018 23 59"
-    }, 
     "1001": {
         "assignedTo": "", 
         "compensation": "$1", 
         "taskSubmitted": false, 
         "tweetSent": false, 
-        "location": "Pencil Sharpener", 
+        "location": "3B:Light above spiral staircase", 
         "submissionTime": 0, 
         "tweetSentTime": 0, 
         "submissionPhotoLink": "", 
-        "datetime": "06 26 2018 23 59"
-    }, 
-    "1002": {
-        "assignedTo": "", 
-        "compensation": "$1", 
-        "taskSubmitted": false, 
-        "tweetSent": false, 
-        "location": "Shower", 
-        "submissionTime": 0, 
-        "tweetSentTime": 0, 
-        "submissionPhotoLink": "", 
-        "datetime": "06 26 2018 23 59"
+        "datetime": "06 27 2018 07 04"
     }
 }

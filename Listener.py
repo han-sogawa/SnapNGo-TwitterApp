@@ -1,12 +1,10 @@
 from tweepy import Stream
 from tweepy import OAuthHandler
 import tweepy
-import json, math, re, csv
+import json, math, re, csv, random
 from tweepy.streaming import StreamListener
-import random
 import time as t
 from datetime import *
-import os, os.path
 
 keys = json.load(open('keys.json'))
 consumer_key = keys['consumer_key']
@@ -25,10 +23,16 @@ def writecsv(text, name, time, recipient):
         writer = csv.writer(csvfile, delimiter=',')
         writer.writerow([text, name, time, recipient])
 
-def readFile():
+# adds new Tasks in json file to the task dictioanry
+def readTasks():
+    # open the json file of tasks
     dictionary = json.load(open('tasks.json'))
+
+    # for every task in the file
     for key in dictionary.keys():
+        # if the task doesn't already exist in task_dictionary
         if (not int(key) in task_dictionary.keys()):
+            # format the datetime variable
             date_time = dictionary[str(key)]["datetime"]
             timeArray = date_time.split(' ')
 
@@ -36,9 +40,8 @@ def readFile():
             task_time = time(int(timeArray[3]), int(timeArray[4]))
             task_datetime = datetime.combine(task_date, task_time)
 
-            print "added task"
+            # add task to task_dictionary
             task_dictionary[int(key)] = Task(int(key), dictionary[str(key)]["location"], task_datetime, dictionary[str(key)]["compensation"])
-    print "In readFile"
 
 
 class Task:
@@ -97,7 +100,7 @@ class BotResponses:
     @staticmethod
     def getResponse(text, name, time):
         text = text.lower()
-        readFile()
+        readTasks()
         # If the user is requesting a task, get the task ID and send them a message
         request_taskID = BotResponses.userRequestingTask(text)
         BotResponses.requestTask(text, name, time, request_taskID)
