@@ -1,13 +1,11 @@
 from tweepy import Stream
 from tweepy import OAuthHandler
 import tweepy
-import json, math, re, csv
+import json, math, re, csv, random
 from tweepy.streaming import StreamListener
-import random
 import time as t
 from datetime import *
 import numpy
-import threading
 import Listener
 
 keys = json.load(open('keys.json'))
@@ -20,15 +18,20 @@ auth.secure = True
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth_handler=auth)
 
-dictionary = {}
+tasks = {}
+file_name = "tasks.json"
+num_tasks = 1 # num of tasks bot tweets at a time
+offset = 8 # num of hours to complete task
+time_interval = 3600 # num of secs before bot tweets again
+
 vertices = {}
 num_vert = 0
 graph = numpy.zeros(shape=(num_vert, num_vert))
 
 class SnapNGo:
     def __init__(self):
-        self.task_ID = 1000
-        self.task_ID2 = 1000
+        self.task_ID = 1000 # Highest ID in the batch of new tasks
+        # self.task_ID2 = 1000 # Lowest ID in the batch of new tasks
 
     # Allows users to select from 4 different actions using the command
     # line. Actions include adding new tasks, tweeting unset tasks, printing
@@ -43,7 +46,7 @@ class SnapNGo:
 
         while (action != 'EXIT'):
             if (action == '1'):
-                self.sendUnsentTweets()
+                self.sendTweetsConfirm()
             elif (action == '2'):
                 self.printTasks()
             elif (action == '3'):
@@ -61,126 +64,122 @@ class SnapNGo:
             print("Type 'EXIT' to exit the program")
             action = raw_input('>')
 
-    def sendUnsentTweets(self):
-        # dictionary = json.load(open('tasks.json'))
+    def sendTweetsConfirm(self):
         send_tweet = raw_input(
             'Are you sure you would like to send tweets for tasks not already sent? Type Y for yes and N for no ')
-        tweets_sent = 0
         if (send_tweet == 'Y'):
-            for i in range(self.task_ID2, self.task_ID):
-                if (not dictionary[str(i)]["tweetSent"]):
-                    api.update_status(self.toString(i))
-                    dictionary[str(i)]["tweetSent"] = True
-                    dictionary[str(i)]["tweetSentTime"] = datetime.now()
-                    tweets_sent += 1
-                    # stagger the tweets by a random number of seconds
-                    seconds = random.randint(30,45)
-                    print "Wait time: " + str(seconds)
-                    t.sleep(seconds)
+            self.sendTweets()
 
+    def sendTweets(self):
+        tweets_sent = 0
+        # for every newly created tweet
+        for i in range(1000, self.task_ID):
+            if (not tasks[i]["tweetSent"]):
+                api.update_status(self.toString(i))
+                tasks[i]["tweetSent"] = True
+                tasks[i]["tweetSentTime"] = datetime.now()
+                tweets_sent += 1
+
+                # stagger the tweets by a random number of seconds
+                seconds = random.randint(30,45)
+                print "Wait time: " + str(seconds)
+                t.sleep(seconds)
         print("Finished. " + str(tweets_sent) + "tweets were sent.")
 
-    #Tweet created tasks every hour
+    # Create tasks every hour and tweet them
     def scheduleTweets(self):
-        global dictionary
-        self.writeTasksToFile("tasks.json")
-        # Listener.readFile()
-        dictionary = json.load(open('tasks.json'))
+        # write tasks to file and then update tasks
+        self.writeTasksToFile(file_name)
 
-        self.sendUnsentTweets()
-        print "Sent tasks. Waiting one hour"
-        t.sleep(3600)
+        # send new tweets
+        self.sendTweetsConfirm()
+        print "Sent tasks. Waiting " + str(time_interval) + " seconds."
 
-    # randomly create 5 tasks into a file
+        # Wait before sending again
+        t.sleep(time_interval)
+
+    # randomly creates tasks into a json file
     def writeTasksToFile(self, file_name):
         file = open(file_name, "w")
-        self.task_ID2 = self.task_ID
         data = {}
-        for i in range(3):
-            location_num = random.randint(1,num_vert)
-            location = vertices[int(location_num)]
-            now = datetime.now().strftime('%m %d %Y %H %M')
-            timeArray = now.split(' ')
+        # self.task_ID2 = self.task_ID # set the new lowest ID num to the current highest ID
 
-            hour = int(timeArray[3])
-            minute = int(timeArray[4])
+        for i in range(num_tasks):
+            location_num = random.randint(1,num_vert) # create a random number
+            location = vertices[int(location_num)] # get the name of that location
 
-            offset = 8
-            if (hour < 24 - offset):
-                hour = hour + offset
-            else:
-                hour = 23
-                minute = 59
+            # get the time now and add an offset to make the deadline
+            deadline = datetime.now() + timedelta(hours=offset)
+            deadline = deadline.strftime('%m %d %Y %H %M')
 
-            task_datetime = str(timeArray[0]) + " " + str(timeArray[1]) + " " + str(timeArray[2]) + " " + str(hour) + " " + str(minute)
-            # writing to a text file
-            # file.write(str(id) + ", " +  str(location) + ", " + str(time[0]) + ", " +
-            #     str(time[1]) + ", " + str(time[2]) + ", " + str(hour) + ", " +
-            #     str(time[4]) + ", $1\n")
+            timeArray = deadline.split(' ')
+            task_datetime = str(timeArray[0]) + " " + str(timeArray[1]) + " " + str(timeArray[2]) + " " + str(timeArray[3]) + " " + str(timeArray[4])
 
-            # adding a string to json
+            # adding task to data that will be put into json file
             data[self.task_ID] = {"location": str(location), "datetime": task_datetime, "compensation": '$1', "tweetSent": False,
             "tweetSentTime": 0, "assignedTo": '', "taskSubmitted": False, "submissionPhotoLink": '', "submissionTime": 0}
+            tasks[self.task_ID] = data[self.task_ID]
 
-            self.task_ID = self.task_ID + 1
+            self.task_ID = self.task_ID + 1 # increment the highest ID by one
 
+        # add the data to json file, overwriting old data
         json.dump(data, file, indent=4)
-        print "Randomly created tasks"
+        print "Randomly created " + str(num_tasks) + " tasks"
 
     @staticmethod
     def readFile(filename):
         global graph
         global num_vert
-
         with open(filename, "r") as f:
-            num_vert = int(f.readline())
+            num_vert = int(f.readline()) # the first line has the # of nodes
             content = f.readlines()
 
-        graph = numpy.zeros(shape=(num_vert, num_vert))
+        graph = numpy.zeros(shape=(num_vert, num_vert)) # create the adjacency matrix
+        count = 0 # temp variable used to skip over the first line in the file
+        edges = False # variable to check if the "#" sign has been reached
 
-        count = 0
-        edges = False
+        # for every line in the file
         for line in content:
             if (count == 0):
                 count = count + 1
-                continue
+                continue # skip the first line
+
             v = line.split(' ', 1)[0]
-            if v == "#\n":
+            if v == "#\n": # check if we've reached the "#" sign
                 edges = True
                 continue
-            if edges is False:
+            if edges is False: # if we haven't reached the "#" sign
                 name = line.split(' ', 1)[1]
                 name = name.strip('\n')
-                vertices[int(v)] = name
+                vertices[int(v)] = name # add the node
             else:
                 edge = line.split(' ')
+                # add the edge
                 graph[int(edge[0]) - 1][int(edge[1]) - 1] = int(edge[2])
 
     def printTasks(self):
-        #  = json.load(open('tasks.json'))
         s = ''
         print self.task_ID
-        for i in range(self.task_ID2, self.task_ID):
-            s += dictionary[self.toString(i)]
+        for i in range(1000, self.task_ID):
+            s += (self.toString(i) + "\n")
         print('All Tasks:\n' + s)
 
     def toString(self, id):
-        # dictionary = json.load(open('tasks.json'))
-        id = str(id)
-        date_time = dictionary[id]["datetime"]
+        # format the datetime variable
+        date_time = tasks[id]["datetime"]
         timeArray = date_time.split(' ')
 
         task_date = date(int(timeArray[2]), int(timeArray[0]), int(timeArray[1]))
         task_time = time(int(timeArray[3]), int(timeArray[4]))
         task_datetime = datetime.combine(task_date, task_time)
 
-        return "Task: " + id + ", Location: " + dictionary[id]["location"] + ", Due By: " + task_datetime.strftime(
-            "%B %d, %Y %I:%M%p") + ", Compensation: " + dictionary[id]["compensation"]
+        return "Task: " + str(id) + ", Location: " + tasks[id]["location"] + ", Due By: " + task_datetime.strftime(
+            "%B %d, %Y %I:%M%p") + ", Compensation: " + tasks[id]["compensation"]
 
 def main():
     SnapNGo.readFile("Sci_Center_Map.txt")
     print('Welcome to Snap \'N\' Go!')
-    
+
     auth = OAuthHandler(consumer_key, consumer_key_secret)
     auth.secure = True
     auth.set_access_token(access_token, access_token_secret)
