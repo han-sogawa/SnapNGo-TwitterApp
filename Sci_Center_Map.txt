@@ -1,0 +1,111 @@
+48
+1 2A:Fire Extinguisher
+2 2B:Beverage Vending Machine in Sage Kitchen
+3 2C:Science Outreach Board
+4 2D:Sci 268
+5 2E:Yellow Public Phone
+6 2F:Sage Lounge TV
+7 2G:Sage Lounge Exit Door
+8 2H:Sci 273
+9 2I:Water Fountain
+10 2J:Pencil Sharpener
+11 2K:Geometric Shapes Display
+12 2L:Metal Ball Pendulum
+13 2M:Printer psci2h
+14 2N:Black Revolving Doors
+15 2O:Large Purple Rock on Display
+16 1A:Emergency shower outside S186
+17 1B:Door of S172
+18 1C:Neuroscience display board
+19 1D:Seed dispersal methods display board
+20 1E:S173 door sign
+21 1F:Fire extinguisher by Stair D
+22 1G:Plant drawings outside S150
+23 1H:North American dye plants display
+24 1I:A microfocus computer
+25 1J:HCI Lab
+26 1K:Twitter polarization poster
+27 1L:CS History
+28 1M:Wellesley Map
+29 1N:LB sign
+30 1O:Sediment table
+31 3N:Blue Box across S383
+32 3K:Water Pipes
+33 3M:Red Couch
+34 3A:Alcove over Administrative Offices
+35 3B:Light above spiral staircase
+36 3C:Window into E315
+37 3D:Cushioned Bench in Alcove above Microfocus
+38 3E:Window above Microfocus
+39 3F:357 Men's Room Door
+40 3G:S362 Door
+41 3J:S377 Projector
+42 3I:Floor 3 Plaque in Stairs
+43 3L:Vesalius Sculpture
+44 3H:Wooden door between 373&375
+45 3O:Whiteboard on 385 Door
+46 3P:Elevator instructions
+47 3Q:Water fountain
+48 3R:Evacuation Plan by 392
+#
+1 2 9
+3 2 11
+3 5 11
+3 4 8
+4 5 6
+2 4 18
+6 7 7
+5 6 16
+6 8 5
+8 9 15
+10 11 20
+11 12 17
+12 13 11
+13 14 1
+15 14 9
+9 10 4
+17 16 18
+17 18 10
+18 19 11
+20 21 15
+22 23 19
+22 24 8
+24 25 10
+25 26 14
+26 27 10
+19 20 17
+21 22 8
+27 28 46
+27 29 53
+29 28 5
+18 28 11
+29 30 19
+30 16 17
+27 19 39
+16 1 26
+18 5 27
+20 8 26
+21 10 26
+27 15 14
+31 32 8
+32 33 8
+32 43 8
+32 42 14
+42 41 17
+39 38 8
+38 37 12
+37 36 19
+36 35 18
+35 34 11
+40 44 30
+42 44 9
+31 45 4
+45 46 23
+46 47 5
+46 48 4
+48 1 26
+42 8 26
+39 10 26
+15 35 15
+33 43 1
+40 39 4
