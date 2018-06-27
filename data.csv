@@ -73,3 +73,114 @@ Error 00: Invalid message. Please check for typos and try again.,SnapNGo_2018,Fr
 Error 00: Invalid message. Please check for typos and try again.,SnapNGo_2018,Fri Jun 22 18:34:06 +0000 2018,SnapNGo_2018
 Error 00: Invalid message. Please check for typos and try again.,SnapNGo_2018,Fri Jun 22 18:34:06 +0000 2018,SnapNGo_2018
 Error 00: Invalid message. Please check for typos and try again.,SnapNGo_2018,Fri Jun 22 18:34:06 +0000 2018,SnapNGo_2018
+request task 1000,gpuzzle_DeeDee,Mon Jun 25 18:32:13 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Mon Jun 25 18:32:13 +0000 2018,gpuzzle_DeeDee
+"Task #1000 details: Photo of Chapel by July 20, 2018 06:30PM. Compensation:  $1",SnapNGo_2018,Mon Jun 25 18:32:14 +0000 2018,gpuzzle_DeeDee
+submit task 1000 https://t.co/zzBcddFfBp,gpuzzle_DeeDee,Mon Jun 25 18:32:27 +0000 2018,SnapNGo_2018
+Thank you for submitting Task #1000. You will be compensated once your submission is reviewed and accepted.,SnapNGo_2018,Mon Jun 25 18:32:27 +0000 2018,gpuzzle_DeeDee
+submit task 1001 https://t.co/VP1ncaopeL,gpuzzle_DeeDee,Mon Jun 25 18:33:02 +0000 2018,SnapNGo_2018
+Error 13: You have not been assigned this task.,SnapNGo_2018,Mon Jun 25 18:33:03 +0000 2018,gpuzzle_DeeDee
+submit task 1002 https://t.co/EWg1QWamkX,gpuzzle_DeeDee,Mon Jun 25 18:33:18 +0000 2018,SnapNGo_2018
+Error 13: You have not been assigned this task.,SnapNGo_2018,Mon Jun 25 18:33:19 +0000 2018,gpuzzle_DeeDee
+submit task abcd,gpuzzle_DeeDee,Mon Jun 25 18:33:46 +0000 2018,SnapNGo_2018
+submit jdksa kdfals,gpuzzle_DeeDee,Mon Jun 25 18:33:57 +0000 2018,SnapNGo_2018
+:^),gpuzzle_DeeDee,Mon Jun 25 18:34:01 +0000 2018,SnapNGo_2018
+request task 1003,silvie_andgold,Mon Jun 25 18:34:16 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Mon Jun 25 18:34:16 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Mon Jun 25 18:34:22 +0000 2018,SnapNGo_2018
+Error 03: This task is already assigned to someone else.,SnapNGo_2018,Mon Jun 25 18:34:22 +0000 2018,silvie_andgold
+request task 1002,silvie_andgold,Mon Jun 25 18:34:29 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1002",SnapNGo_2018,Mon Jun 25 18:34:29 +0000 2018,silvie_andgold
+"Task #1002 details: Photo of KSC by July 20, 2018 06:30PM. Compensation:  $1",SnapNGo_2018,Mon Jun 25 18:34:29 +0000 2018,silvie_andgold
+submit task 1002 https://t.co/QDSvhDwB8z,silvie_andgold,Mon Jun 25 18:34:46 +0000 2018,SnapNGo_2018
+Thank you for submitting Task #1002. You will be compensated once your submission is reviewed and accepted.,SnapNGo_2018,Mon Jun 25 18:34:47 +0000 2018,silvie_andgold
+request task 1003,gpuzzle_DeeDee,Mon Jun 25 18:36:45 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Mon Jun 25 18:36:46 +0000 2018,gpuzzle_DeeDee
+request task 1000,silvie_andgold,Tue Jun 26 16:26:20 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 16:26:20 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 16:27:51 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 16:27:52 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 16:30:22 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 16:30:22 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 16:32:19 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 16:32:20 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 16:33:23 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 16:33:23 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 16:34:26 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 16:34:26 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of Bates_Statue by June 25, 2018 12:25AM. Compensation: $1",SnapNGo_2018,Tue Jun 26 16:34:27 +0000 2018,silvie_andgold
+request task 3000,silvie_andgold,Tue Jun 26 16:34:34 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 16:34:35 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 16:34:41 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 16:34:41 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of Bates_Statue by June 25, 2018 12:25AM. Compensation: $1",SnapNGo_2018,Tue Jun 26 16:34:41 +0000 2018,silvie_andgold
+request task 1001,gpuzzle_DeeDee,Tue Jun 26 18:32:46 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1001",SnapNGo_2018,Tue Jun 26 18:32:47 +0000 2018,gpuzzle_DeeDee
+"Task #1001 details: Photo of Sev_Green by June 26, 2018 10:30PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 18:32:47 +0000 2018,gpuzzle_DeeDee
+request task 1000,silvie_andgold,Tue Jun 26 18:33:19 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 18:33:19 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of KSC by June 26, 2018 10:30PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 18:33:19 +0000 2018,silvie_andgold
+request task 1000,gpuzzle_DeeDee,Tue Jun 26 18:35:28 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 18:35:28 +0000 2018,gpuzzle_DeeDee
+"Task #1000 details: Photo of Swing by June 26, 2018 10:34PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 18:35:28 +0000 2018,gpuzzle_DeeDee
+request task 1000,silvie_andgold,Tue Jun 26 18:35:45 +0000 2018,SnapNGo_2018
+Error 03: This task is already assigned to someone else.,SnapNGo_2018,Tue Jun 26 18:35:46 +0000 2018,silvie_andgold
+submit task 1000 https://t.co/XdT5QmpoF3,gpuzzle_DeeDee,Tue Jun 26 18:35:59 +0000 2018,SnapNGo_2018
+Thank you for submitting Task #1000. You will be compensated once your submission is reviewed and accepted.,SnapNGo_2018,Tue Jun 26 18:35:59 +0000 2018,gpuzzle_DeeDee
+request task 1000,silvie_andgold,Tue Jun 26 19:03:54 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 19:03:54 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of Paramecium_Pond by June 26, 2018 11:03PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 19:03:54 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:03:59 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 19:03:59 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of Paramecium_Pond by June 26, 2018 11:03PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 19:04:00 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:04:06 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 19:04:06 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of Paramecium_Pond by June 26, 2018 11:03PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 19:04:06 +0000 2018,silvie_andgold
+request task 1000,gpuzzle_DeeDee,Tue Jun 26 19:04:07 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 19:04:07 +0000 2018,gpuzzle_DeeDee
+"Task #1000 details: Photo of Paramecium_Pond by June 26, 2018 11:03PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 19:04:07 +0000 2018,gpuzzle_DeeDee
+request task 1000,gpuzzle_DeeDee,Tue Jun 26 19:04:46 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 19:04:46 +0000 2018,gpuzzle_DeeDee
+"Task #1000 details: Photo of Paramecium_Pond by June 26, 2018 11:03PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 19:04:46 +0000 2018,gpuzzle_DeeDee
+request task 1000,silvie_andgold,Tue Jun 26 19:37:03 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 19:37:03 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:38:44 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 19:38:44 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:40:33 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 19:40:33 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:43:48 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 19:43:48 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:54:28 +0000 2018,SnapNGo_2018
+Error 01: This Task ID is not valid. Please request an existing task.,SnapNGo_2018,Tue Jun 26 19:54:28 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:56:18 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 19:56:19 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of Pom by June 26, 2018 11:56PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 19:56:19 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:56:43 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 19:56:44 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of Pom by June 26, 2018 11:56PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 19:56:44 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:59:01 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 19:59:01 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of Chapel by June 26, 2018 11:58PM. Compensation: $1",SnapNGo_2018,Tue Jun 26 19:59:02 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 19:59:10 +0000 2018,SnapNGo_2018
+Error 02: You have already been assigned this task.,SnapNGo_2018,Tue Jun 26 19:59:10 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 20:00:36 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1000",SnapNGo_2018,Tue Jun 26 20:00:37 +0000 2018,silvie_andgold
+"Task #1000 details: Photo of Bates_Statue by June 26, 2018 12:00AM. Compensation: $1",SnapNGo_2018,Tue Jun 26 20:00:37 +0000 2018,silvie_andgold
+request task 1000,silvie_andgold,Tue Jun 26 20:00:40 +0000 2018,SnapNGo_2018
+Error 02: You have already been assigned this task.,SnapNGo_2018,Tue Jun 26 20:00:40 +0000 2018,silvie_andgold
+request task 1001,silvie_andgold,Tue Jun 26 20:01:16 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1001",SnapNGo_2018,Tue Jun 26 20:01:17 +0000 2018,silvie_andgold
+"Task #1001 details: Photo of Swing by June 26, 2018 12:00AM. Compensation: $1",SnapNGo_2018,Tue Jun 26 20:01:17 +0000 2018,silvie_andgold
+request task 1003,silvie_andgold,Tue Jun 26 20:03:42 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1003",SnapNGo_2018,Tue Jun 26 20:03:42 +0000 2018,silvie_andgold
+"Task #1003 details: Photo of 9&amp;3/4_Sign by June 26, 2018 12:02AM. Compensation: $1",SnapNGo_2018,Tue Jun 26 20:03:43 +0000 2018,silvie_andgold
+submit task 1000 https://t.co/Faw9tUSXag,silvie_andgold,Tue Jun 26 20:03:53 +0000 2018,SnapNGo_2018
+Error 14: You have missed the submission deadline.,SnapNGo_2018,Tue Jun 26 20:03:54 +0000 2018,silvie_andgold
+submit task 1001 https://t.co/A0muImEc8l,silvie_andgold,Tue Jun 26 20:04:09 +0000 2018,SnapNGo_2018
+Error 14: You have missed the submission deadline.,SnapNGo_2018,Tue Jun 26 20:04:10 +0000 2018,silvie_andgold
+request task 1002 https://t.co/C3t3qmJSTI,silvie_andgold,Tue Jun 26 20:04:23 +0000 2018,SnapNGo_2018
+"Thank you, you have been assigned task #1002",SnapNGo_2018,Tue Jun 26 20:04:24 +0000 2018,silvie_andgold
+"Task #1002 details: Photo of Boathouse by June 26, 2018 12:00AM. Compensation: $1",SnapNGo_2018,Tue Jun 26 20:04:24 +0000 2018,silvie_andgold
+submit task 1003 https://t.co/XdWYtdOcgl,silvie_andgold,Tue Jun 26 20:04:40 +0000 2018,SnapNGo_2018
+request task 1000,gpuzzle_silv,Tue Jun 26 20:09:27 +0000 2018,SnapNGo_2018
+request task 1000,gpuzzle_silv,Tue Jun 26 20:11:02 +0000 2018,SnapNGo_2018

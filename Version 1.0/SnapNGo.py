@@ -6,8 +6,9 @@ from tweepy.streaming import StreamListener
 import random
 import time as t
 from datetime import *
-import threading
+from multiprocessing import Pool
 import numpy
+import threading
 
 keys = json.load(open('keys.json'))
 consumer_key = keys['consumer_key']
@@ -23,10 +24,6 @@ task_dictionary = {}
 vertices = {}
 num_vert = 19
 graph = numpy.zeros(shape=(num_vert, num_vert))
-
-import re, json, csv
-from datetime import *
-import json
 
 
 class Task:
@@ -161,15 +158,16 @@ class SnapNGo:
                     task_dictionary[i].sendTaskTweet()
                     tweets_sent += 1
                     # stagger the tweets by a random number of seconds
-                    # seconds = random.randint(30,45)
-                    # print "Wait time: " + str(seconds)
-                    # t.sleep(seconds)
+                    seconds = random.randint(30,45)
+                    print "Wait time: " + str(seconds)
+                    t.sleep(seconds)
 
         print("Finished. " + str(tweets_sent) + "tweets were sent.")
 
     # randomly create 5 tasks into a file
     def writeTasksToFile(self, file_name):
         file = open(file_name, "w")
+        data = {}
         id = 1000
         for i in range(5):
             location_num = random.randint(1,19)
@@ -186,11 +184,15 @@ class SnapNGo:
             else:
                 hour = offset - (24 - hour)
 
-            file.write(str(id) + ", " +  str(location) + ", " + str(time[0]) + ", " +
-                str(time[1]) + ", " + str(time[2]) + ", " + str(hour) + ", " +
-                str(time[4]) + ", $1\n")
+            # file.write(str(id) + ", " +  str(location) + ", " + str(time[0]) + ", " +
+            #     str(time[1]) + ", " + str(time[2]) + ", " + str(hour) + ", " +
+            #     str(time[4]) + ", $1\n")
 
+
+            data[id] = str(id) + ", " +  str(location) + ", " + str(time[0]) + ", " + str(time[1]) + ", " + str(time[2]) + ", " + str(hour) + ", " + str(time[4]) + ", $1"
             id = id + 1
+
+        json.dump(data, file)
         print "Randomly created 5 tasks"
 
     @staticmethod
@@ -234,10 +236,8 @@ class DMListener(StreamListener):
     def on_connect(self):
         print("Stream Connected")
 
-
     def on_disconnect(self, notice):
         print("Stream Connection Lost:", notice)
-
 
     def on_data(self, status):
         status_json = json.loads(status)
@@ -259,7 +259,6 @@ class DMListener(StreamListener):
             BotResponses.getResponse(text, name, time)
             SnapNGo.writecsv(text, name, time, recipient)
         return True
-
 
     def on_error(self, status):
         print("Error:", status)
@@ -396,6 +395,7 @@ def main():
     t1.join()
     # wait until thread 2 is completely executed
     t2.join()
+
 
 if __name__ == '__main__':
     #when a follow request is received, follow them back and send a message.
