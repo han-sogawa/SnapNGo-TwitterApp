@@ -6,7 +6,8 @@ from tweepy.streaming import StreamListener
 import time as t
 from datetime import *
 import numpy
-import Listener
+import pymysql
+import functions
 
 keys = json.load(open('keys.json'))
 consumer_key = keys['consumer_key']
@@ -18,11 +19,17 @@ auth.secure = True
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth_handler=auth)
 
+auth = json.load(open('auth.json'))
+host=auth['host']
+user=auth['user']
+password=auth['password']
+db=auth['db']
+
 tasks = {}
 file_name = "tasks.json"
-num_tasks = 1 # num of tasks bot tweets at a time
+num_tasks = 3 # num of tasks bot tweets at a time
 offset = 8 # num of hours to complete task
-time_interval = 3600 # num of secs before bot tweets again
+time_interval = 60 # num of secs before bot tweets again
 
 vertices = {}
 num_vert = 0
@@ -39,7 +46,7 @@ class SnapNGo:
     def selectAction(self):
         print("Type '1' to tweet unsent tasks")
         print("Type '2' to print all tasks")
-        print("Type '3' to write tasks to a file")
+        print("Type '3' to create tasks")
         print("Type '4' to tweet tasks every hour")
         print("Type 'EXIT' to exit the program")
         action = raw_input('>')
@@ -50,9 +57,7 @@ class SnapNGo:
             elif (action == '2'):
                 self.printTasks()
             elif (action == '3'):
-                print('Write the name of the file to write tasks to:')
-                file_name = raw_input('>>')
-                self.writeTasksToFile(file_name)
+                self.createTasks()
             elif (action == '4'):
                 while (True):
                     self.scheduleTweets()
@@ -71,60 +76,46 @@ class SnapNGo:
             self.sendTweets()
 
     def sendTweets(self):
-        tweets_sent = 0
-        # for every newly created tweet
-        for i in range(1000, self.task_ID):
-            if (not tasks[i]["tweetSent"]):
-                api.update_status(self.toString(i))
-                tasks[i]["tweetSent"] = True
-                tasks[i]["tweetSentTime"] = datetime.now()
-                tweets_sent += 1
+        conn = pymysql.connect(host=host, user=user, password=password, db=db)
+        tasks = functions.getUnsentTasks(conn)
+        tweets_sent = len(tasks)
 
-                # stagger the tweets by a random number of seconds
-                seconds = random.randint(30,45)
-                print "Wait time: " + str(seconds)
-                t.sleep(seconds)
+        # for every newly created tweet
+        for task in tasks:
+            status = api.update_status("Task: " + str(task['id']) + ", Location: " + str(task['location']) + ", Due By: " + str(task['deadline']) + ", Compensation: $" + str(task['compensation']))
+            functions.markAsSent(conn, task["id"], datetime.now(), status.id)
+            # stagger the tweets by a random number of seconds
+            seconds = random.randint(30,45)
+            print "Wait time: " + str(seconds)
+            t.sleep(seconds)
         print("Finished. " + str(tweets_sent) + "tweets were sent.")
+        conn.close()
+
 
     # Create tasks every hour and tweet them
     def scheduleTweets(self):
         # write tasks to file and then update tasks
-        self.writeTasksToFile(file_name)
-
-        # send new tweets
-        self.sendTweetsConfirm()
+        self.createTasks()
+        self.sendTweetsConfirm() # send new tweets
         print "Sent tasks. Waiting " + str(time_interval) + " seconds."
 
-        # Wait before sending again
-        t.sleep(time_interval)
+        t.sleep(time_interval) # Wait before sending again
 
-    # randomly creates tasks into a json file
-    def writeTasksToFile(self, file_name):
-        file = open(file_name, "w")
-        data = {}
-        # self.task_ID2 = self.task_ID # set the new lowest ID num to the current highest ID
-
+    # Creates tasks into a json file
+    def createTasks(self):
+        conn = pymysql.connect(host=host, user=user, password=password, db=db)
         for i in range(num_tasks):
-            location_num = random.randint(1,num_vert) # create a random number
-            location = vertices[int(location_num)] # get the name of that location
-
-            # get the time now and add an offset to make the deadline
+            location = self.createLocation()
             deadline = datetime.now() + timedelta(hours=offset)
-            deadline = deadline.strftime('%m %d %Y %H %M')
+            compensation = 1.00
+            functions.addTask(conn, location, deadline, compensation)
+        print "Created " + str(num_tasks) + " tasks"
+        conn.close()
 
-            timeArray = deadline.split(' ')
-            task_datetime = str(timeArray[0]) + " " + str(timeArray[1]) + " " + str(timeArray[2]) + " " + str(timeArray[3]) + " " + str(timeArray[4])
-
-            # adding task to data that will be put into json file
-            data[self.task_ID] = {"location": str(location), "datetime": task_datetime, "compensation": '$1', "tweetSent": False,
-            "tweetSentTime": 0, "assignedTo": '', "taskSubmitted": False, "submissionPhotoLink": '', "submissionTime": 0}
-            tasks[self.task_ID] = data[self.task_ID]
-
-            self.task_ID = self.task_ID + 1 # increment the highest ID by one
-
-        # add the data to json file, overwriting old data
-        json.dump(data, file, indent=4)
-        print "Randomly created " + str(num_tasks) + " tasks"
+    def createLocation(self):
+        location_num = random.randint(1,num_vert) # create a random number
+        print "location node: " + str(location_num)
+        return vertices[int(location_num)] # get the name of that location
 
     @staticmethod
     def readFile(filename):
@@ -158,23 +149,11 @@ class SnapNGo:
                 graph[int(edge[0]) - 1][int(edge[1]) - 1] = int(edge[2])
 
     def printTasks(self):
-        s = ''
-        print self.task_ID
-        for i in range(1000, self.task_ID):
-            s += (self.toString(i) + "\n")
-        print('All Tasks:\n' + s)
-
-    def toString(self, id):
-        # format the datetime variable
-        date_time = tasks[id]["datetime"]
-        timeArray = date_time.split(' ')
-
-        task_date = date(int(timeArray[2]), int(timeArray[0]), int(timeArray[1]))
-        task_time = time(int(timeArray[3]), int(timeArray[4]))
-        task_datetime = datetime.combine(task_date, task_time)
-
-        return "Task: " + str(id) + ", Location: " + tasks[id]["location"] + ", Due By: " + task_datetime.strftime(
-            "%B %d, %Y %I:%M%p") + ", Compensation: " + tasks[id]["compensation"]
+        conn = pymysql.connect(host=host, user=user, password=password, db=db)
+        tasks = functions.getTasks(conn)
+        for task in tasks:
+            print "Task: " + str(task['id']) + ", Location: " + str(task['location']) + ", Due By: " + str(task['deadline']) + ", Compensation: $" + str(task['compensation'])
+        conn.close()
 
 def main():
     SnapNGo.readFile("Sci_Center_Map.txt")
