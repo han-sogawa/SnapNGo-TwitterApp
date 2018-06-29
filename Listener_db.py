@@ -71,14 +71,13 @@ class BotResponses:
         person = functions.getUserByID(conn, user_id)
         if (person is None):
             functions.addUser(conn, name, user_id)
-        text = text.lower()
 
         # If the user is requesting a task, get the task ID and send them a message
-        request_taskID = BotResponses.userRequestingTask(text)
+        request_taskID = BotResponses.checkMessage(text, "request")
         BotResponses.requestTask(text, name, time, request_taskID, user_id)
 
         # If the user is submitting a task, get the task ID and send them a message
-        submit_taskID = BotResponses.userSubmittingTask(text)
+        submit_taskID = BotResponses.checkMessage(text, "submit")
         BotResponses.submitTask(text, name, time, submit_taskID, user_id)
 
     @staticmethod
@@ -109,9 +108,9 @@ class BotResponses:
                 else:
                     message = "Error 03: This task is already assigned to someone else."
             api.send_direct_message(screen_name = name, text = message)
+            conn.close()
         # except:
         #     print "Program caught an error."
-        conn.close()
 
     @staticmethod
     def submitTask(text, name, time, submit_taskID, user_id):
@@ -119,7 +118,9 @@ class BotResponses:
         if (submit_taskID is not None):
             conn = pymysql.connect(host=host, user=user, password=password, db=db)
             task = functions.getTaskByID(conn, submit_taskID)
-
+            image = BotResponses.containsImage(text)
+            print "???????????"
+            print task
             print 'User ' + name + ' is submitting photo for task #' + str(submit_taskID)
             # check if the task exists
             if (task is None):
@@ -131,44 +132,29 @@ class BotResponses:
             elif (task['deadline'] < time):
                 message = "Error 14: You have missed the submission deadline."
             #If the task has already been submitted
-            elif (task['taskSubmitted'] == 0):
+            elif (task['taskSubmitted'] == '\x01'):
                 message = "Error 12: You have already submitted this task."
-            # elif (not BotResponses.containsImage(text)):
-            #     message = "Error 15: Picture is not attached. Please try again."
+            elif (image is None):
+                message = "Error 15: Picture is not attached. Please attach the image to the submission message and try again."
             else:
                 # Mark the task as submitted and the submission time as now
-                functions.markAsSubmitted(conn, time, submit_taskID)
+                functions.markAsSubmitted(conn, time, submit_taskID, image)
                 # Compensation: " + str(task_dictionary[int(submit_taskID)].compensation
                 message = "Thank you for submitting Task #" + str(submit_taskID) + ". You will be compensated once your submission is reviewed and accepted."
             print message
             api.send_direct_message(screen_name=name, text=message)
+            conn.close()
         # except:
         #     print "Program caught an error."
-        conn.close()
 
     @staticmethod
-    def userRequestingTask(message):
+    def checkMessage(message, messageType):
         message = message.split(' ')
-        action = message[0]
-        isTask = message[1]
+        action = message[0].lower()
+        task = message[1].lower()
         task_ID = message[2]
 
-        if action == "request" and isTask == "task":
-            try:
-                task_ID = int(task_ID)
-            except ValueError:
-                pass
-            return task_ID
-        return None
-
-    @staticmethod
-    def userSubmittingTask(message):
-        message = message.split(' ')
-        action = message[0]
-        isTask = message[1]
-        task_ID = message[2]
-
-        if action == "submit" and isTask == "task":
+        if action == messageType and task == "task":
             try:
                 task_ID = int(task_ID)
             except ValueError:
@@ -180,10 +166,10 @@ class BotResponses:
     def containsImage(message):
         # determine if a DM contains an contains an image
         try:
-            url = message.split(' ', 1)[3]
-            return True
+            url = message.split(' ')[3]
+            return url
         except IndexError:
-            return False
+            return None
 
 def main():
     print('Welcome to Snap \'N\' Go!')

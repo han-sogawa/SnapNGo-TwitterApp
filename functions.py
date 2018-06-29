@@ -52,9 +52,9 @@ def addUser(conn, username, user_id):
     curs.close()
     conn.commit()
 
-def markAsSubmitted(conn, time, id):
+def markAsSubmitted(conn, time, id, image):
     #Add photo link at some point
     curs = conn.cursor(pymysql.cursors.DictCursor)
-    curs.execute('UPDATE tasks SET taskSubmitted = 1, submissionTime = %s where id = %s', [time, id])
+    curs.execute('UPDATE tasks SET taskSubmitted = 1, submissionTime = %s, submissionPhotoLink = %s where id = %s', [time, image, id])
     curs.close()
     conn.commit()

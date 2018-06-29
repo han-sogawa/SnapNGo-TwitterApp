@@ -25,9 +25,7 @@ user=auth['user']
 password=auth['password']
 db=auth['db']
 
-tasks = {}
-file_name = "tasks.json"
-num_tasks = 3 # num of tasks bot tweets at a time
+num_tasks = 1 # num of tasks bot tweets at a time
 offset = 8 # num of hours to complete task
 time_interval = 60 # num of secs before bot tweets again
 
@@ -36,16 +34,12 @@ num_vert = 0
 graph = numpy.zeros(shape=(num_vert, num_vert))
 
 class SnapNGo:
-    def __init__(self):
-        self.task_ID = 1000 # Highest ID in the batch of new tasks
-        # self.task_ID2 = 1000 # Lowest ID in the batch of new tasks
-
     # Allows users to select from 4 different actions using the command
     # line. Actions include adding new tasks, tweeting unset tasks, printing
     # all tasks, and writing tasks to a file
     def selectAction(self):
         print("Type '1' to tweet unsent tasks")
-        print("Type '2' to print all tasks")
+        print("Type '2' to print unsent tasks")
         print("Type '3' to create tasks")
         print("Type '4' to tweet tasks every hour")
         print("Type 'EXIT' to exit the program")
@@ -63,8 +57,8 @@ class SnapNGo:
                     self.scheduleTweets()
 
             print("Type '1' to tweet unsent tasks")
-            print("Type '2' to print all tasks")
-            print("Type '3' to write tasks to a file")
+            print("Type '2' to print unsent tasks")
+            print("Type '3' to create tasks")
             print("Type '4' to tweet tasks every hour")
             print("Type 'EXIT' to exit the program")
             action = raw_input('>')
@@ -82,24 +76,23 @@ class SnapNGo:
 
         # for every newly created tweet
         for task in tasks:
-            status = api.update_status("Task: " + str(task['id']) + ", Location: " + str(task['location']) + ", Due By: " + str(task['deadline']) + ", Compensation: $" + str(task['compensation']))
+            location = task['location'].split(':')
+            floor = location[0][:1]
+            name = location[1]
+            deadline = task['deadline'].strftime("%B %d, %Y %I:%M%p")
+
+            tweet = "Task: " + str(task['id']) + "\nFloor: " + str(floor) + '\nLocation: ' + \
+             str(name) + "\nDue By: " + deadline + "\nCompensation: $" + str(task['compensation'])
+            status = api.update_status(tweet)
             functions.markAsSent(conn, task["id"], datetime.now(), status.id)
+
             # stagger the tweets by a random number of seconds
             seconds = random.randint(30,45)
             print "Wait time: " + str(seconds)
             t.sleep(seconds)
+
         print("Finished. " + str(tweets_sent) + "tweets were sent.")
         conn.close()
-
-
-    # Create tasks every hour and tweet them
-    def scheduleTweets(self):
-        # write tasks to file and then update tasks
-        self.createTasks()
-        self.sendTweetsConfirm() # send new tweets
-        print "Sent tasks. Waiting " + str(time_interval) + " seconds."
-
-        t.sleep(time_interval) # Wait before sending again
 
     # Creates tasks into a json file
     def createTasks(self):
@@ -116,6 +109,15 @@ class SnapNGo:
         location_num = random.randint(1,num_vert) # create a random number
         print "location node: " + str(location_num)
         return vertices[int(location_num)] # get the name of that location
+
+    # Create tasks every hour and tweet them
+    def scheduleTweets(self):
+        # write tasks to file and then update tasks
+        self.createTasks()
+        self.sendTweetsConfirm() # send new tweets
+        print "Sent tasks. Waiting " + str(time_interval) + " seconds."
+
+        t.sleep(time_interval) # Wait before sending again
 
     @staticmethod
     def readFile(filename):
@@ -150,7 +152,7 @@ class SnapNGo:
 
     def printTasks(self):
         conn = pymysql.connect(host=host, user=user, password=password, db=db)
-        tasks = functions.getTasks(conn)
+        tasks = functions.getUnsentTasks(conn)
         for task in tasks:
             print "Task: " + str(task['id']) + ", Location: " + str(task['location']) + ", Due By: " + str(task['deadline']) + ", Compensation: $" + str(task['compensation'])
         conn.close()
